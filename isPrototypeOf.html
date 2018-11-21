@@ -1,0 +1,83 @@
+<script src="tinytest.js"></script>
+<script type="text/javascript">
+
+function isPrototypeOf(object1, object2) {
+  var prototype = object2.__proto__;
+
+  if (!prototype) return false;
+
+  return (prototype === object1) ? true : isPrototypeOf(object1, prototype);
+}
+
+</script>
+<script>
+tests({
+  'it should return true if object1 is the prototype of object2': function() {
+    var canine = {
+      bark: function() {
+        console.log('bark');
+      },
+    }
+
+    var dog = {
+      fetch: function() {
+        console.log('fetch');
+      },
+      __proto__: canine,
+    }
+
+    eq(isPrototypeOf(canine, dog), true);
+  },
+  'it should return false if object1 is not the prototype of object2': function() {
+    var canine = {
+      bark: function() {
+        console.log('bark');
+      },
+    }
+
+    var dog = {
+      fetch: function() {
+        console.log('fetch');
+      },
+      __proto__: {},
+    }
+
+    eq(isPrototypeOf(canine, dog), false);
+  },
+  'it should return true if object1 elsewhere in the prototype chain of object2': function() {
+    var canine = {
+      bark: function() {
+        console.log('bark');
+      },
+    }
+
+    var dog = {
+      fetch: function() {
+        console.log('fetch');
+      },
+      __proto__: canine,
+    }
+
+    var myDog = {
+      name: 'fido',
+      __proto__: dog,
+    }
+
+    eq(isPrototypeOf(canine, myDog), true);
+  },
+  'it should return false if object2 has no prototype': function() {
+    var canine = {
+      bark: function() {
+        console.log('bark');
+      },
+    }
+
+    var dog = Object.create(null);
+
+    eq(isPrototypeOf(canine, dog), false);
+  },
+});
+  
+</script>
+
+
