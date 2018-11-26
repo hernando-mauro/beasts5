@@ -3,9 +3,7 @@
 
 function isPrototypeOf(object1, object2) {
   var prototype = object2.__proto__;
-
   if (!prototype) return false;
-
   return (prototype === object1) ? true : isPrototypeOf(object1, prototype);
 }
 
